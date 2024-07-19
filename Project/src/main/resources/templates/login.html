@@ -1,0 +1,123 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <title>Login</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Вход</h1>-->
+<!--<form th:action="@{/login}" method="post">-->
+<!--  <div>-->
+<!--    <label>Username:</label>-->
+<!--    <input type="text" id="username" name="username" />-->
+<!--  </div>-->
+<!--  <div>-->
+<!--    <label>Password:</label>-->
+<!--    <input type="password" id="password" name="password" />-->
+<!--  </div>-->
+<!--  <div>-->
+<!--    <button type="submit">Войти</button>-->
+<!--  </div>-->
+<!--</form>-->
+<!--<div>-->
+<!--  <form action="/register">-->
+<!--    <button>Регистрация</button>-->
+<!--    <p th:if="${param.error}" class="form-error">Неправильный логин или пароль</p>-->
+<!--  </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login</title>
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fG5pZ2h0JTIwc2t5fGVufDB8fHx8MTY4OTcxMTY0NQ&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: #ffffff;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 3em;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    }
+    form {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      margin: 50px auto;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      box-sizing: border-box;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+    input[type="text"], input[type="password"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    button {
+      width: calc(100% - 20px);
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #1e90ff;
+      color: #ffffff;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background 0.3s;
+      box-sizing: border-box;
+    }
+    button:hover {
+      background: #4169e1;
+    }
+    .form-error {
+      color: #ff4500;
+      text-align: center;
+      margin-top: 20px;
+      margin-block-end: 0em;
+    }
+    div {
+      text-align: center;
+    }
+    .third {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<h1>Вход</h1>
+<form th:action="@{/login}" method="post">
+  <div class="first">
+    <label>Username:</label>
+    <input type="text" id="username" name="username" />
+  </div>
+  <div class="second">
+    <label>Password:</label>
+    <input type="password" id="password" name="password" />
+  </div>
+  <div  class="third">
+    <button type="submit">Войти</button>
+  </div>
+  <p th:if="${param.error}" class="form-error">Неправильный логин или пароль</p>
+</form>
+<div>
+  <form action="/register">
+    <button>Регистрация</button>
+  </form>
+</div>
+</body>
+</html>

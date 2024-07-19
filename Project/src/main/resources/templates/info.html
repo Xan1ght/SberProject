@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Просмотр задачи</title>
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGNvc21vc3xlbnwwfHx8fDE2ODk3MTQzNzY&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: #ffffff;
+    }
+    h1, h2 {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 2em;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+    p {
+      text-align: center;
+      font-size: 1.2em;
+    }
+    .task-details {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      width: 50%;
+      box-sizing: border-box;
+      color: #ffffff;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+    span {
+      color: #1e90ff;
+    }
+    a {
+        text-align: center;
+        background: #1e90ff;
+        color: #ffffff;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-bottom: 0px;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-sizing: border-box;
+        text-decoration: none;
+    }
+    a:hover {
+      background-color: #4169e1;
+    }
+    .button {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px auto 0;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        width: 50%;
+        box-sizing: border-box;
+        display: flex;
+    }
+  </style>
+</head>
+<body>
+<h1>Ну давай, посмотри, что ты тут наделал</h1>
+<div class="task-details">
+  <label>Название: <span th:text="${task.getName()}"></span></label>
+
+  <br>
+  <label>Описание: <span th:text="${task.getDescription()}"></span></label>
+
+  <br>
+  <label>Дата: <span th:text="${task.getTime()}"></span></label>
+
+  <br>
+  <label>Выполнено: <span th:if="${task.getActive() == true}" th:text="${'Да'}"></span>
+    <span th:if="${task.getActive() == false}" th:text="${'Нет'}"></span>
+  </label>
+
+  <br>
+  <label>Важность: <span th:if="${task.getRating() == 1}" th:text="${'Высокая'}"></span>
+    <span th:if="${task.getRating() == 2}" th:text="${'Средняя'}"></span>
+    <span th:if="${task.getRating() == 3}" th:text="${'Низкая'}"></span></label>
+
+  <br>
+</div>
+<div class="button">
+  <a th:href="@{/main/edit/{id}(id=${task.getId()})}">Редактировать</a>
+</div>
+<div class="button">
+  <a th:href="@{/}">Вернуться</a>
+</div>
+
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Home Page</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Ну давай, посмотри, что ты тут наделал </h1>-->
+
+<!--Название: <a th:text="${task.getName()}"&ndash;&gt;</a>-->
+<!--<br>-->
+<!--Описание: <a th:text="${task.getDescription()}"&ndash;&gt;</a>-->
+<!--<br>-->
+<!--Дата:<a th:text="${task.getTime()}"&ndash;&gt;</a>-->
+<!--<br>-->
+<!--Еще доступно?:<a th:text="${task.getActive()}"&ndash;&gt;</a>-->
+<!--<br>-->
+<!--Важность:-->
+<!--<a th:if="${task.getRating() == 1}" th:text="${'Высокая'}"&ndash;&gt;</a>-->
+<!--<a th:if="${task.getRating() == 2}" th:text="${'Средняя'}"&ndash;&gt;</a>-->
+<!--<a th:if="${task.getRating() == 3}" th:text="${'Низкая'}"&ndash;&gt;</a>-->
+<!--<br>-->
+<!--&lt;!&ndash;<a th:text="Редактировать"&ndash;&gt;-->
+<!--&lt;!&ndash;   th:href="@{/main/edit/{id}(id=${task.getId()})}">base</a>&ndash;&gt;-->
+
+<!--<a th:text="Редактировать"-->
+<!--   th:href="@{/main/edit/{id}(id=${task.getId()})}">base</a>-->
+<!--</body>-->
+<!--</html>-->

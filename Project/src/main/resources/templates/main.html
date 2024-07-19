@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BugDate</title>
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGNvc21vc3xlbnwwfHx8fDE2ODk3MTQzNzY&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+        p {
+            text-align: center;
+            font-size: 1.2em;
+        }
+        form {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        input[type="text"], input[type="datetime-local"], input[type="password"], select, input[type="checkbox"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        select, input[type="radio"], input[type="checkbox"] {
+            margin-bottom: 20px;
+        }
+        button, input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #1e90ff;
+            color: #ffffff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-sizing: border-box;
+        }
+        button:hover, input[type="submit"]:hover {
+            background: #4169e1;
+        }
+        .form-error {
+            color: #ff4500;
+            text-align: left;
+            margin-top: -15px;
+            margin-bottom: 10px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .container > div {
+            margin: 20px;
+            width: 45%;
+        }
+        .form-wrapper {
+            flex: 1;
+        }
+        .search-wrapper {
+            flex: 2;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-list li {
+            background: rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        .task-list li a {
+            color: #1e90ff;
+            text-decoration: none;
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+        .task-list li .open-task {
+            color: #09E801;
+        }
+        .task-list li .archive-task {
+            color: #ff4500;
+            margin-left: 20px;
+        }
+        .archive-task-button {
+            color: #ff4500;
+            background:none;
+            border:none;
+            margin: 0;
+            margin-left: 20px;
+            padding:0;
+        }
+        .archive-task-button:hover {
+            color: #ff4500;
+            background:none;
+            border:none;
+            margin: 0;
+            margin-left: 20px;
+            padding:0;
+        }
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .task-table th, .task-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+        }
+        .task-table th {
+            cursor: pointer;
+        }
+        fieldset {
+            margin-bottom: 20px;
+        }
+        .non-form {
+        }
+    </style>
+</head>
+<body>
+<h1>Сделай Задачу</h1>
+<div class="container">
+    <div class="form-wrapper">
+        <h2>Добавь</h2>
+        <form class="form-true" th:object="${base}" action="/main" method="post">
+            <label>Название цели:</label>
+            <input type="text" th:field="*{name}"><div class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+            <label>Описание:</label>
+            <input type="text" th:field="*{description}">
+            <label>Важность:</label>
+            <select th:field="*{rating}">
+                <option value="1">High</option>
+                <option value="2">Medium</option>
+                <option value="3">Low</option>
+            </select>
+            <label for="localdate">Дата и время:</label>
+            <input type="datetime-local" id="localdate" th:field="*{time}"><div class="form-error" th:if="${#fields.hasErrors('time')}" th:text="${#fields.errors('time').get(#fields.errors('time').size() - 1)}"></div>
+            <label>Категория:</label>
+            <select th:field="*{category}">
+                <option value="OTHER">OTHER</option>
+                <option value="LIFE">LIFE</option>
+                <option value="WORK">WORK</option>
+                <option value="REST">REST</option>
+                <option value="FAMILY">FAMILY</option>
+            </select>
+            <label>Повторяющаяся:</label>
+            <select th:field="*{repeatable}">
+                <option value="NEVER">NEVER</option>
+                <option value="HOURS">HOURS</option>
+                <option value="DAY">DAY</option>
+                <option value="WEEK">WEEK</option>
+            </select>
+            <fieldset style="width:10em">
+                <legend>Выполнено:</legend>
+                <div>
+                    <input type="checkbox" id="scales" th:field="*{active}"/>
+                    <label for="scales">да</label>
+                </div>
+            </fieldset>
+            <button type="submit">Добавить задачу</button>
+        </form>
+    </div>
+
+    <div class="search-wrapper">
+        <h2>Поиск и Фильтрация</h2>
+        <table class="task-table">
+            <tr>
+                <th colspan="2">
+                    <form action="/main/forName">
+                        <input name="search" type="text" id="search" placeholder="Поиск по словам">
+                        <input type="submit" value="Поиск"/>
+                    </form>
+                </th>
+                <th>
+                    <form action="/main/forTime">
+                        <input name="date" type="datetime-local" id="date"/>
+                        <input type="submit" value="Поиск"/>
+                    </form>
+                </th>
+                <th>
+                    <form action="/main/forCategory">
+                        <select name="category" id="category">
+                            <option value="OTHER">OTHER</option>
+                            <option value="LIFE">LIFE</option>
+                            <option value="WORK">WORK</option>
+                            <option value="REST">REST</option>
+                            <option value="FAMILY">FAMILY</option>
+                        </select>
+                        <input type="submit" value="Поиск"/>
+                    </form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form action="/main/completed">
+                        <button>Только выполненные</button>
+                    </form>
+                </th>
+                <th>
+                    <form action="/main/notcompleted">
+                        <button>Только невыполненные</button>
+                    </form>
+                </th>
+                <th>
+                    <form action="/main/all">
+                        <button>Показать все задачи c архивом</button>
+                    </form>
+                </th>
+                <th>
+                    <form action="/main/allSort">
+                        <button>Показать задачи по важности</button>
+                    </form>
+                </th>
+            </tr>
+        </table>
+
+        <h2>Список всех задач</h2>
+        <ul class="task-list">
+            <li th:each="all : ${all}">
+                <span th:text="${all.getName()}">Task Name</span>
+                <a class="open-task" th:href="@{/main/{id}(id=${all.getId()})}">Открыть</a>
+                <a class="edit-task" th:href="@{/main/edit/{id}(id=${all.getId()})}">Редактировать</a>
+                <a class="archive-task" th:href="@{/archive/{id}(id=${all.getId()})}" >Заархивировать</a>
+            </li>
+        </ul>
+        <h2>Список архивированных задач</h2>
+        <ul class="task-list">
+            <li th:each="archive : ${archive}">
+                <span th:text="${archive.getName()}">Archived Task Name</span>
+                <a class="open-task" th:href="@{/main/archive/{id}(id=${archive.getId()})}">Открыть</a>
+                <a class="edit-task" th:href="@{/main/edit/{id}(id=${archive.getId()})}">Редактировать</a>
+                <form th:action="@{/delete/{id}(id=${archive.getId()})}" method="post" style="box-shadow: 0 0 0;background: rgba(0, 0, 0, 0);padding: 0;margin: 0 20px 0;">
+                    <button type="submit" class="archive-task-button">Удалить</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>You Bag Data</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>You Bag Data </h1>-->
+<!--<p>Если ты добрался до сюда, считай уже молодец</p>-->
+<!--<p>Ниже строчка по вашему пожеланию</p>-->
+
+<!--<form th:object="${base}" action="/main" method="post">-->
+<!--    Название цели: <input type="text" th:field="*{name}"><br/><div class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>-->
+<!--    Описание: <input type="text" step="any" th:field="*{description}"><br/>-->
+<!--    Важность:-->
+<!--    <p><select th:field="*{rating}">-->
+<!--        <option value="1">High</option>-->
+<!--        <option value="2">Medium</option>-->
+<!--        <option value="3">Low</option>-->
+<!--    </select></p>-->
+<!--    <label for="localdate">Дата и время: </label>-->
+<!--    <input type="datetime-local" id="localdate" th:field="*{time}"/><br/><div class="form-error" th:if="${#fields.hasErrors('time')}" th:text="${#fields.errors('time').get(#fields.errors('time').size() - 1)}"></div>-->
+
+<!--    Категория:-->
+<!--    <p><select th:field="*{category}">-->
+<!--        <option value="LIFE">LIFE</option>-->
+<!--        <option value="WORK">WORK</option>-->
+<!--        <option value="REST">REST</option>-->
+<!--        <option value="FAMILY">FAMILY</option>-->
+<!--        <option value="OTHER">OTHER</option>-->
+<!--    </select></p>-->
+
+<!--    Повторяющаяся:-->
+<!--    <p><select th:field="*{repeatable}">-->
+<!--        <option value="NEVER">NEVER</option>-->
+<!--        <option value="HOURS">HOURS</option>-->
+<!--        <option value="DAY">DAY</option>-->
+<!--        <option value="WEEK">WEEK</option>-->
+<!--    </select></p>-->
+
+<!--    <fieldset style="width:10em">-->
+<!--        <legend>Выполнено:</legend>-->
+<!--        <div>-->
+<!--            <input type="checkbox" id="scales" th:field="*{active}" checked/>-->
+<!--            <label for="scales">да</label>-->
+<!--        </div>-->
+<!--    </fieldset>-->
+<!--    <button type="submit">Добавить план</button>-->
+<!--</form>-->
+<!--<form action="/main/all">-->
+<!--    <button>Все твои работы тут</button>-->
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->

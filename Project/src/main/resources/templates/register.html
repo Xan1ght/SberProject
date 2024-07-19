@@ -1,0 +1,123 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Register</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Регистрация</h1>-->
+<!--<form th:action="@{/register}" th:object="${user}" method="post">-->
+<!--    <div>-->
+<!--        <label>Username:</label>-->
+<!--        <input type="text" th:field="*{email}" /><div class="form-error" th:if="${#fields.hasErrors('email')}" th:text="${#fields.errors('email').get(#fields.errors('email').size() - 1)}"></div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <label>Password:</label>-->
+<!--        <input type="password" th:field="*{password}" /><div class="form-error" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password').get(#fields.errors('password').size() - 1)}"></div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <button type="submit">Зарегистрироваться</button>-->
+<!--    </div>-->
+<!--</form>-->
+<!--<div>-->
+<!--    <form action="/login" >-->
+<!--        <button>Вход</button>-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fG5pZ2h0JTIwc2t5fGVufDB8fHx8MTY4OTcxMzQ4MA&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 3em;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+        form {
+          background: rgba(0, 0, 0, 0.7);
+          padding: 20px;
+          border-radius: 10px;
+          width: 350px;
+          margin: 50px auto;
+          box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+          box-sizing: border-box;
+        }
+        label {
+          display: block;
+          margin-bottom: 10px;
+          font-size: 1.2em;
+        }
+        input[type="text"], input[type="password"] {
+          width: calc(100% - 20px);
+          padding: 10px;
+          margin-bottom: 20px;
+          border: none;
+          border-radius: 5px;
+          background: rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+          font-size: 1em;
+          box-sizing: border-box;
+        }
+        button {
+          width: calc(100% - 20px);
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          background: #1e90ff;
+          color: #ffffff;
+          font-size: 1.2em;
+          cursor: pointer;
+          transition: background 0.3s;
+          box-sizing: border-box;
+        }
+        button:hover {
+            background: #4169e1;
+        }
+        .form-error {
+            color: #ff4500;
+            text-align: left;
+            padding-left: 10px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+        div {
+            text-align: center;
+        }
+        .third {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Регистрация</h1>
+<form th:action="@{/register}" th:object="${user}" method="post">
+    <div>
+        <label>Username:</label>
+        <input type="text" th:field="*{email}" />
+        <div class="form-error" th:if="${#fields.hasErrors('email')}" th:text="${#fields.errors('email').get(#fields.errors('email').size() - 1)}"></div>
+    </div>
+    <div>
+        <label>Password:</label>
+        <input type="password" th:field="*{password}" />
+        <div class="form-error" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password').get(#fields.errors('password').size() - 1)}"></div>
+    </div>
+    <div class="third">
+        <button type="submit">Зарегистрироваться</button>
+    </div>
+</form>
+<div>
+    <form action="/login">
+        <button>Вход</button>
+    </form>
+</div>
+</body>
+</html>
