@@ -1,5 +1,6 @@
 package sber.project.service;
 
+
 import sber.project.entity.User;
 import sber.project.repository.UserRepository;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,8 +26,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUser() {
-        System.out.println("Получаем всех клиентов");
         List<User> result = (List<User>) userRepository.findAll();
         if (result.size() > 0) {
             return result;
@@ -35,13 +37,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByEmail(String name) {
-        System.out.println(name);
-        System.out.println(userRepository.findByEmail(name));
+    @Transactional(readOnly = true)
+    public Optional<User>getUserByEmail(String name) {
+//        System.out.println(name);
+//        System.out.println(userRepository.findByEmail(name));
         return userRepository.findByEmail(name);
     }
 
     @Override
+    @Transactional
     public void createOrUpdateUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
@@ -49,6 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUserById(int id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {

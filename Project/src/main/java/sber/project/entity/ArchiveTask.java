@@ -28,6 +28,9 @@ public class ArchiveTask {
     private int rating;
     @Column(name = "category")
     private Category category;
-    @Column(name = "repitable")
-    private Repitable repitable;
+    @Column(name = "repeatable")
+    private Repitable repeatable;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

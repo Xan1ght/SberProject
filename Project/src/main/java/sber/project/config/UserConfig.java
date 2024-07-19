@@ -23,6 +23,6 @@ public class UserConfig {
                         .password(user.getPassword())
                         .roles(user.getRole())
                         .build())
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найдет"));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 }

@@ -1,12 +1,13 @@
 package sber.project.service;
 
 import sber.project.entity.ArchiveTask;
+import sber.project.entity.User;
 import sber.project.repository.ArchiveRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class ArchiveServiceImpl implements ArchiveService {
@@ -18,8 +19,9 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     @Override
-    public List<ArchiveTask> getAllArchive() {
-        List<ArchiveTask> bases = (List<ArchiveTask>) archiveRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<ArchiveTask> getAllArchive(User user) {
+        List<ArchiveTask> bases = (List<ArchiveTask>) archiveRepository.findAllByUser(user);
         if (bases.size() > 0) {
             return bases;
         } else {
@@ -28,45 +30,22 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     @Override
-    public ArchiveTask getArchiveById(int id) {
-        Optional<ArchiveTask> base = archiveRepository.findById(id);
-        if (base.isPresent()) {
-            return base.get();
-        } else {
-            System.out.println("запись не найдена");
-            return new ArchiveTask();
-        }
+    @Transactional(readOnly = true)
+    public ArchiveTask getArchiveById(int id, User user) {
+        return archiveRepository.findByIdAndUser(id, user);
     }
 
     @Override
-    public ArchiveTask createOrUpdateArchive(ArchiveTask archiveTask) {
-        if (archiveTask.getId() == 0) {
-            archiveTask = archiveRepository.save(archiveTask);
-            return archiveTask;
-        } else {
-            Optional<ArchiveTask> baseOld = archiveRepository.findById(archiveTask.getId());
-            if (baseOld.isPresent()) {
-                ArchiveTask newBase = baseOld.get();
-                newBase.setName(archiveTask.getName());
-                newBase.setTime(archiveTask.getTime());
-                newBase.setActive(archiveTask.getActive());
-                newBase.setRating(archiveTask.getRating());
-                archiveRepository.save(newBase);
-                return newBase;
-            } else {
-                archiveTask = archiveRepository.save(archiveTask);
-                return archiveTask;
-            }
-        }
+    @Transactional
+    public ArchiveTask createOrUpdateArchive(ArchiveTask archiveTask, User user) {
+        archiveTask = archiveRepository.save(archiveTask);
+        return archiveTask;
     }
 
     @Override
-    public void deleteTaskArchiveById(int id) {
-        Optional<ArchiveTask> base = archiveRepository.findById(id);
-        if (base.isPresent()) {
-            archiveRepository.deleteById(id);
-        } else {
-            System.out.println("Такого задания нет");
-        }
+    @Transactional
+    public void deleteTaskArchiveById(int id, User user) {
+        ArchiveTask base = archiveRepository.findByIdAndUser(id, user);
+        archiveRepository.deleteById(id);
     }
 }

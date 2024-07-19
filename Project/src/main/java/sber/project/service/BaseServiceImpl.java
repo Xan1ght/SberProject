@@ -1,15 +1,16 @@
 package sber.project.service;
 
 import sber.project.entity.Base;
+import sber.project.entity.User;
 import sber.project.enums.Category;
 import sber.project.enums.Repitable;
 import sber.project.repository.BaseRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BaseServiceImpl implements BaseService {
@@ -21,8 +22,8 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<Base> getAllBase() {
-        List<Base> bases = (List<Base>) baseRepository.findAll();
+    public List<Base> getAllBase(User user) {
+        List<Base> bases = (List<Base>) baseRepository.findAllByUser(user);
         if (bases.size() > 0) {
             return bases;
         } else {
@@ -31,73 +32,66 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public Base getBaseById(int id) {
-        Optional<Base> base = baseRepository.findById(id);
-        if (base.isPresent()) {
-            return base.get();
-        } else {
-            return new Base(0, " ", " ", null, true, 0, Category.OTHER, Repitable.NEVER);
-        }
+    public Base getBaseById(int id, User user) {
+        Base base = baseRepository.findByIdAndUser(id, user);
+        return base;
     }
 
     @Override
-    public Base createOrUpdateBase(Base base) {
+    @Transactional
+    public Base createOrUpdateBase(Base base, User user) {
         if (base.getId() == 0) {
             base = baseRepository.save(base);
             return base;
         } else {
-            Optional<Base> baseOld = baseRepository.findById(base.getId());
-            if (baseOld.isPresent()) {
-                Base newBase = baseOld.get();
-                newBase.setName(base.getName());
-                newBase.setTime(base.getTime());
-                newBase.setActive(base.getActive());
-                newBase.setRating(base.getRating());
-                baseRepository.save(newBase);
-                return newBase;
-            } else {
-                base = baseRepository.save(base);
-                return base;
-            }
+            Base baseOld = baseRepository.findByIdAndUser(base.getId(), user);
+            baseOld.setId(base.getId());
+            baseOld.setName(base.getName());
+            baseOld.setTime(base.getTime());
+            baseOld.setActive(base.getActive());
+            baseOld.setRating(base.getRating());
+            baseOld.setCategory(base.getCategory());
+            baseOld.setRepeatable(base.getRepeatable());
+            baseOld.setUser(user);
+            baseRepository.save(baseOld);
+            return baseOld;
         }
     }
 
     @Override
-    public void deleteBaseById(int id) {
-        Optional<Base> base = baseRepository.findById(id);
-        if (base.isPresent()) {
-            baseRepository.deleteById(id);
-        } else {
-            System.out.println("Такой базы нет");
-        }
+    @Transactional
+    public void deleteBaseById(int id, User user) {
+        Base base = baseRepository.findByIdAndUser(id, user);
+        baseRepository.deleteById(id);
     }
 
     @Override
-    public List<Base> findByActive(Boolean active) {
-        return baseRepository.findAllByActive(active);
+    public List<Base> findByActive(Boolean active, User user) {
+        return baseRepository.findAllByActiveAndUser(active, user);
     }
 
     @Override
-    public List<Base> findByTime(LocalDateTime time) {
-        return baseRepository.findAllByTime(time);
+    public List<Base> findByTime(LocalDateTime time, User user) {
+        return baseRepository.findByTimeBeforeAndUser(time,user);
     }
 
     @Override
-    public List<Base> findByName(String search) {
-        return baseRepository.findByNameOrDescription(search);
+    public List<Base> findByCategory(Category category, User user) {
+        return baseRepository.findAllByCategoryAndUser(category, user);
     }
 
     @Override
-    public List<Base> findByCategory(Category category) {
-        return baseRepository.findAllByCategory(category);
+    public List<Base> findByName(String search, User user) {
+        return baseRepository.findByNameOrDescriptionAndUser(search, user);
     }
 
     @Override
-    public List<Base> sortByRating() {
-        return baseRepository.findAllOrderByRatingAsc();
+    public List<Base> sortByRating(User user) {
+        return baseRepository.findByUserOrderByRatingAsc(user);
     }
 
     @Override
+    @Transactional
     public void nextTime(List<Base> bases) {
         for (Base bas : bases) {
             if (bas.getRepeatable() == Repitable.DAY) {

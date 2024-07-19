@@ -2,31 +2,167 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
+    <title>Редактирование задачи</title>
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGNvc21vc3xlbnwwfHx8fDE2ODk3MTQzNzY&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+        p {
+            text-align: center;
+            font-size: 1.2em;
+        }
+        form {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            width: 50%;
+            box-sizing: border-box;
+        }
+        label, legend {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        input[type="text"], input[type="datetime-local"], select, input[type="checkbox"], button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        button {
+            background: #1e90ff;
+            color: #ffffff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 0px;
+        }
+        button:hover {
+            background: #4169e1;
+        }
+        .form-error {
+            color: #ff4500;
+            text-align: left;
+            margin-top: -15px;
+            margin-bottom: 10px;
+        }
+        fieldset {
+            margin-bottom: 20px;
+        }
+        .button-back {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            width: 50%;
+            box-sizing: border-box;
+            display: flex;
+        }
+        .button-back a {
+            text-align: center;
+            background: #1e90ff;
+            color: #ffffff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 0px;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+        .button-back a:hover {
+          background-color: #4169e1;
+        }
+    </style>
 </head>
 <body>
-<h1>Меняй меня, если сможешь </h1>
+<h1>Редактирование задачи</h1>
 
 <form th:action="@{/main/edit/{id}(id=${base.getId()})}" th:object="${base}" method="post">
-    Название цели: <input type="text" th:field="*{name}"><br/>
-    Описание: <input type="text" step="any" th:field="*{description}"><br/>
-    Важность: <div><input type="radio" value="1" th:field="*{rating}"/>
-    <input type="radio" value="2" th:field="*{rating}"/>
-    <input type="radio" value="3" th:field="*{rating}"/>
-    <input type="radio" value="4" th:field="*{rating}"/>
-    <input type="radio" value="5" th:field="*{rating}"/></div>
-    <label for="localdate">Дата и время: </label>
-    <input type="datetime-local" id="localdate" th:field="*{time}"/><br/>
-    <fieldset style="width:10em">
+    <label>Название цели:</label>
+    <input type="text" th:field="*{name}">
+    <label>Описание:</label>
+    <input type="text" th:field="*{description}">
+    <label>Важность:</label>
+    <select th:field="*{rating}">
+        <option value="1">High</option>
+        <option value="2">Medium</option>
+        <option value="3">Low</option>
+    </select>
+    <label for="localdate">Дата и время:</label>
+    <input type="datetime-local" id="localdate" th:field="*{time}">
+    <fieldset>
         <legend>Выполнено:</legend>
         <div>
-            <input type="checkbox" id="scales" th:field="*{active}" checked />
+            <input type="checkbox" id="scales" th:field="*{active}" checked>
             <label for="scales">да</label>
         </div>
     </fieldset>
-    <button type="submit">Сохранить твои изменея</button>
+    <button type="submit">Сохранить изменения</button>
 </form>
 
-<form th:action="@{/delete/{id}(id=${base.getId()})}" th:object="${base}" target="_blank">
-    <button>Удали</button>
+<form th:action="@{/delete/{id}(id=${base.getId()})}" th:object="${base}" method="post">
+    <button>Удалить</button>
 </form>
+<div class="button-back">
+    <a th:href="@{/}">Вернуться</a>
+</div>
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Home Page</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Редактирование задачи </h1>-->
+
+<!--<form th:action="@{/main/edit/{id}(id=${base.getId()})}" th:object="${base}" method="post">-->
+<!--    Название цели: <input type="text" th:field="*{name}"><br/>-->
+<!--    Описание: <input type="text" step="any" th:field="*{description}"><br/>-->
+<!--    Важность: <div><select th:field="*{rating}">-->
+<!--    <option value="1">High</option>-->
+<!--    <option value="2">Medium</option>-->
+<!--    <option value="3">Low</option>-->
+<!--</select></div>-->
+<!--    <label for="localdate">Дата и время: </label>-->
+<!--    <input type="datetime-local" id="localdate" th:field="*{time}"/><br/>-->
+<!--    <fieldset style="width:10em">-->
+<!--        <legend>Выполнено:</legend>-->
+<!--        <div>-->
+<!--            <input type="checkbox" id="scales" th:field="*{active}" checked />-->
+<!--            <label for="scales">да</label>-->
+<!--        </div>-->
+<!--    </fieldset>-->
+<!--    <button type="submit">Сохранить изменения</button>-->
+<!--</form>-->
+
+<!--<form th:action="@{/delete/{id}(id=${base.getId()})}" th:object="${base}">-->
+<!--    <button>Удали</button>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
